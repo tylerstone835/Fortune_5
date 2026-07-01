@@ -44,7 +44,7 @@ def get_daily_price_action(
                     h=lambda x: x['h'].round(2),
                     l=lambda x: x['l'].round(2),
                     c=lambda x: x['c'].round(2),
-
+                    v=lambda x: x['v'].round(0),
                 )
                 .filter(['date', 'ticker', 'o', 'h', 'l', 'c', 'v'])
                 .rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
