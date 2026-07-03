@@ -3,7 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from Static.company import company_dict
-from Utils.chart_utils import plot_ohlc
+from Utils.chart_utils import *
 
 
 # Initial page configuration and default pad settings.
@@ -84,10 +84,17 @@ fig, ax = plt.subplots(figsize=(10, 2.75))
 fig.set_facecolor((0, 0, 0, 0))
 plt.tight_layout()
 
-plot_ohlc(
-    axes=ax,
-    df=df
-)
+if style == 'OHLC':
+    plot_ohlc(
+        axes=ax,
+        df=df
+    )
+
+elif style == 'Candle':
+    plot_candle(
+        axes=ax,
+        df=df
+    )
 
 # Body layout
 st.title('Fortune 5', text_alignment='center')
