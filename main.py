@@ -1,7 +1,10 @@
+import matplotlib.pyplot as plt
 import pandas as pd
 import streamlit as st
 
 from Static.company import company_dict
+from Utils.chart_utils import plot_ohlc
+
 
 # Initial page configuration and default pad settings.
 st.set_page_config(layout='wide', page_title='Fortune 5')
@@ -75,6 +78,17 @@ df = pd.read_csv(
 if not volume:
     df = df.drop(columns=['volume'])
 
+df = df.tail(125).reset_index(drop=True)
+
+fig, ax = plt.subplots(figsize=(10, 2.75))
+fig.set_facecolor((0, 0, 0, 0))
+plt.tight_layout()
+
+plot_ohlc(
+    axes=ax,
+    df=df
+)
+
 # Body layout
 st.title('Fortune 5', text_alignment='center')
 st.subheader(
@@ -82,4 +96,5 @@ st.subheader(
     text_alignment='center',
     divider='grey'
 )
+st.pyplot(fig=fig, width='content')
 st.dataframe(df, hide_index=True)
