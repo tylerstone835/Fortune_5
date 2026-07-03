@@ -4,6 +4,7 @@ import streamlit as st
 
 from Static.company import company_dict
 from Utils.chart_utils import *
+from Utils.df_utils import *
 
 
 # Initial page configuration and default pad settings.
@@ -92,6 +93,12 @@ if style == 'OHLC':
 
 elif style == 'Candle':
     plot_candle(
+        axes=ax,
+        df=df
+    )
+
+else:
+    plot_line(
         axes=ax,
         df=df
     )
