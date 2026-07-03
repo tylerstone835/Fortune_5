@@ -104,4 +104,4 @@ st.subheader(
     divider='grey'
 )
 st.pyplot(fig=fig, width='content')
-st.dataframe(df, hide_index=True)
+st.dataframe(df.sort_values(by='date', ascending=False), hide_index=True)
