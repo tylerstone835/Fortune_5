@@ -21,6 +21,8 @@ st.markdown(
 
 # Sidebar layout
 with st.sidebar:
+    st.space('xxsmall')
+
     st.write('# Chart Options')
 
     symbol = st.selectbox(
@@ -43,9 +45,9 @@ with st.sidebar:
 
     style = st.segmented_control(
         label='**Chart Style**',
-        options=['Candle', 'Line'],
+        options=['OHLC', 'Candle', 'Line'],
         selection_mode='single',
-        default='Candle',
+        default='OHLC',
         required=True
     )
 
