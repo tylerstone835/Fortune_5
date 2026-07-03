@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 _GRID_ALPHA = .1
-_GREEN = '#07880b'
-_RED = '#b73b3d'
+_GREEN = (.03, .53, .04, 1)
+_RED = (.72, .23, .24, 1)
 
 
 def plot_ohlc(
