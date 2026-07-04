@@ -41,7 +41,7 @@ def plot_ohlc(
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
     axes.tick_params(axis='x', direction='in', length=0)
-    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=(.9, .9, .9, .65), labelsize='xx-small', color=(0,0,0,0))
+    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0,0,0,0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
 
@@ -78,7 +78,7 @@ def plot_candle(
         axes.set_xticks(xticks)
         axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
         axes.tick_params(axis='x', direction='in', length=0)
-        axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=(.9, .9, .9, .65), labelsize='xx-small', color=(0, 0, 0, 0))
+        axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
         axes.set_xbound(lower=-.5, upper=len(df) - .5)
         axes.set_frame_on(False)
 
@@ -113,6 +113,6 @@ def plot_line(
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
     axes.tick_params(axis='x', direction='in', length=0)
-    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=(.9, .9, .9, .65), labelsize='xx-small', color=(0, 0, 0, 0))
+    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
