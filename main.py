@@ -63,7 +63,6 @@ with st.sidebar:
     macd_hist = st.toggle(label='**MACD Histogram**', value=False)
     macd_lines = st.toggle(label='**MACD Lines**', value=False)
     st.space('xxsmall')
-    sma = st.slider(label='**SMA**', min_value=0, max_value=100, value=0)
     ema = st.slider(label='**EMA**', min_value=0, max_value=100, value=0)
 
 chart_number = 1 + volume + (macd_hist or macd_lines)
