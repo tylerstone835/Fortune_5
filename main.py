@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from Static.company import company_dict
+from Static.layout import layout_kwargs
 from Utils.chart_utils import *
 from Utils.df_utils import *
 
@@ -64,6 +65,8 @@ with st.sidebar:
     sma = st.slider(label='**SMA**', min_value=0, max_value=100, value=0)
     ema = st.slider(label='**EMA**', min_value=0, max_value=100, value=0)
 
+chart_number = 1 + volume + (macd_hist or macd_lines)
+
 # Footer layout
 with st.bottom:
     st.markdown(
@@ -81,34 +84,38 @@ if not volume:
 
 df = df.tail(125).reset_index(drop=True)
 
-fig, ax = plt.subplots(figsize=(10, 2.75))
+fig, ax = plt.subplots(**layout_kwargs[chart_number])
+if chart_number == 1:
+    ax = [ax]
+
 fig.set_facecolor((0, 0, 0, 0))
 plt.tight_layout()
 
 if style == 'OHLC':
     plot_ohlc(
-        axes=ax,
+        axes=ax[0],
         df=df
     )
 
 elif style == 'Candle':
     plot_candle(
-        axes=ax,
+        axes=ax[0],
         df=df
     )
 
 else:
     plot_line(
-        axes=ax,
+        axes=ax[0],
+        df=df
+    )
+
+if volume:
+    plot_volume(
+        axes=ax[1],
         df=df
     )
 
 # Body layout
-st.title('Fortune 5', text_alignment='center')
-st.subheader(
-    body='Visualizing price action for the five largest companies.',
-    text_alignment='center',
-    divider='grey'
-)
-st.pyplot(fig=fig, width='content')
-st.dataframe(df.sort_values(by='date', ascending=False), hide_index=True)
+st.title('Fortune 5 - Price Action for the Five Largest Companies', text_alignment='center')
+with st.container(border=True, horizontal_alignment='center'):
+    st.pyplot(fig=fig, width='content')
