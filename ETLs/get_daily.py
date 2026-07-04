@@ -5,8 +5,11 @@ import pandas as pd
 
 import requests
 
+from Utils.df_utils import calculate_macd
+
 POLYGON_API_KEY = os.environ.get('POLYGON_API_KEY')
-START_DATE = date.today() - timedelta(days=365)
+START_DATE = date.today() - timedelta(days=730)
+CUTOFF_DATE = date.today() - timedelta(days=365)
 END_DATE = date.today()
 
 logger = logging.getLogger(__name__)
@@ -50,10 +53,17 @@ def get_daily_price_action(
                 .rename(columns={'o': 'open', 'h': 'high', 'l': 'low', 'c': 'close', 'v': 'volume'})
             )
 
+            calculate_macd(daily_df)
+
         except:
             logger.error('Daily DataFrame failed to parse for %s', path)
+            return
 
-        daily_df.to_csv(f'../Assets/Data/Daily/{ticker}.csv', index=False)
+        (
+            daily_df
+            .loc[daily_df['date'] >= CUTOFF_DATE.strftime('%Y-%m-%d')]
+            .to_csv(f'../Assets/Data/Daily/{ticker}.csv', index=False)
+        )
 
 
 if __name__ == '__main__':
