@@ -121,10 +121,12 @@ if volume:
         df=df
     )
 
-if macd_hist:
-    plot_macd_histogram(
+if macd_hist or macd_lines:
+    plot_macd(
         axes=ax[chart_number - 1],
-        df=df
+        df=df,
+        plot_hist=macd_hist,
+        plot_lines=macd_lines
     )
 
 # Body layout
