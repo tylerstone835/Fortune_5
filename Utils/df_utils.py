@@ -22,6 +22,37 @@ def is_green_day(
     return True
 
 
+def get_bom(
+    df: pd.DataFrame,
+) -> pd.Series:
+    """
+    Get the smallest date at the beginning of each month in DataFrame.
+    :param df:
+    :return:
+    """
+
+    required_columns_set = {'date'}
+
+    if not required_columns_set <= set(df.columns):
+        raise ValueError('Missing necessary data to construct BOM')
+
+    bom_df = (
+        df
+        [['date']].astype('datetime64[ns]')
+        .assign(
+            month=lambda df: df['date'].apply(lambda x: x.month),
+            year=lambda df: df['date'].apply(lambda x: x.year)
+        )
+        .groupby(by=['month', 'year'], as_index=False)
+        .min()
+        ['date'].astype('string')
+    )
+
+    return bom_df
+
+
+
+
 def calculate_macd(
     df: pd.DataFrame,
     short_window: int = 12,
