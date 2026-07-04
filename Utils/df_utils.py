@@ -20,3 +20,52 @@ def is_green_day(
         return is_green_df.loc[0, 'close'] >= is_green_df.loc[1, 'close']
 
     return True
+
+
+def calculate_macd(
+    df: pd.DataFrame,
+    short_window: int = 12,
+    long_window: int = 26,
+    signal_window: int = 9,
+) -> None:
+    """
+    Calculate macd_histogram column for designated pd.DataFrame.
+
+    :param df: Target pd.DataFrame
+    :param short_window: Number of closing periods used to make the short window.
+    :param long_window: Number of closing periods used to make the long window.
+    :param signal_window: Number of (short_window - long_window) periods to make signal line.
+    """
+
+    required_columns_set = {'close'}
+
+    if not required_columns_set <= set(df.columns):
+        raise ValueError('Missing necessary data to construct MACD')
+
+    df[f'ema_{short_window}'] = (
+        df[['close']]
+        .ewm(span=short_window, adjust=False, min_periods=short_window)
+        .mean()
+        .reset_index(drop=True)
+    )
+
+    df[f'ema_{long_window}'] = (
+        df[['close']]
+        .ewm(span=long_window, adjust=False, min_periods=long_window)
+        .mean()
+        .reset_index(drop=True)
+    )
+
+    df['fast_line'] = df[f'ema_{short_window}'] - df[f'ema_{long_window}']
+
+    df['signal_line'] = (
+        df[['fast_line']]
+        .ewm(span=signal_window, adjust=False, min_periods=signal_window)
+        .mean()
+        .reset_index(drop=True)
+    )
+
+    df['macd_histogram'] = round(df['fast_line'] - df['signal_line'], 7)
+    df[['fast_line', 'signal_line']] = df[['fast_line', 'signal_line']].round(7)
+
+    df.drop(columns=[f'ema_{short_window}', f'ema_{long_window}'], inplace=True)
