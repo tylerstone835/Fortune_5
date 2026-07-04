@@ -47,3 +47,5 @@ trove-classifiers==2026.1.14.14
 urllib3==2.6.3
 virtualenv==21.2.0
 zstandard==0.25.0
+
+matplotlib
