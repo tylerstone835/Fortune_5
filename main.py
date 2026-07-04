@@ -50,9 +50,9 @@ with st.sidebar:
 
     style = st.segmented_control(
         label='**Chart Style**',
-        options=['OHLC', 'Candle', 'Line'],
+        options=['Candle', 'Line', 'OHLC'],
         selection_mode='single',
-        default='OHLC',
+        default='Candle',
         required=True
     )
 
@@ -80,7 +80,13 @@ df = pd.read_csv(
 )
 
 if not volume:
-    df = df.drop(columns=['volume'])
+    df.drop(columns=['volume'], inplace=True)
+
+if not macd_hist:
+    df.drop(columns=['macd_histogram'], inplace=True)
+
+if not macd_lines:
+    df.drop(columns=['fast_line', 'signal_line'], inplace=True)
 
 df = df.tail(125).reset_index(drop=True)
 
@@ -112,6 +118,12 @@ else:
 if volume:
     plot_volume(
         axes=ax[1],
+        df=df
+    )
+
+if macd_hist:
+    plot_macd_histogram(
+        axes=ax[chart_number - 1],
         df=df
     )
 
