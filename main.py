@@ -1,7 +1,3 @@
-import matplotlib.pyplot as plt
-import pandas as pd
-import streamlit as st
-
 from Static.company import company_dict
 from Static.layout import layout_kwargs
 from Utils.chart_utils import *
@@ -136,4 +132,16 @@ if macd_hist or macd_lines:
 # Body layout
 st.title('Fortune 5 - Price Action for the Five Largest Companies', text_alignment='center')
 with st.container(border=True, horizontal_alignment='center'):
-    st.pyplot(fig=fig, width='content')
+    with st.container(horizontal_alignment='right'):
+        viz_output = st.segmented_control(
+            label=None,
+            options=['Chart', 'DataFrame'],
+            selection_mode='single',
+            default='Chart',
+            required=True
+        )
+
+    if viz_output == 'Chart':
+        st.pyplot(fig=fig, width='content')
+    elif viz_output == 'DataFrame':
+        st.dataframe(df, height='content', hide_index=True)
