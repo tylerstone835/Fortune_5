@@ -7,6 +7,7 @@ _GRID_ALPHA = .1
 _GREEN = (.03, .53, .04, 1)
 _RED = (.72, .23, .24, 1)
 _Y_LABEL_GREY = (.5, .5, .5, 1)
+_SPINE_WIDTH = .1
 
 
 def plot_ohlc(
@@ -43,7 +44,12 @@ def plot_ohlc(
     axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0,0,0,0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
-    axes.set_frame_on(False)
+    axes.set_facecolor((0,0,0,0))
+    axes.spines[['left', 'right', 'top']].set_visible(False)
+    axes.spines[['bottom']].set_visible(True)
+    axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+    axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
+
 
 
 def plot_candle(
@@ -80,7 +86,11 @@ def plot_candle(
     axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
-    axes.set_frame_on(False)
+    axes.set_facecolor((0, 0, 0, 0))
+    axes.spines[['left', 'right', 'top']].set_visible(False)
+    axes.spines[['bottom']].set_visible(True)
+    axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+    axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
 
 
 def plot_line(
@@ -115,7 +125,11 @@ def plot_line(
     axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
-    axes.set_frame_on(False)
+    axes.set_facecolor((0,0,0,0))
+    axes.spines[['left', 'right', 'top']].set_visible(False)
+    axes.spines[['bottom']].set_visible(True)
+    axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+    axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
 
 
 def plot_volume(
@@ -151,8 +165,12 @@ def plot_volume(
     axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
-    axes.set_frame_on(False)
     axes.yaxis.get_offset_text().set_fontsize('xx-small')
+    axes.set_facecolor((0,0,0,0))
+    axes.spines[['left', 'right', 'top']].set_visible(False)
+    axes.spines[['bottom']].set_visible(True)
+    axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+    axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
 
 
 def plot_macd(
@@ -193,7 +211,11 @@ def plot_macd(
         axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
         axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
         axes.set_xbound(lower=-.5, upper=len(df) - .5)
-        axes.set_frame_on(False)
+        axes.set_facecolor((0, 0, 0, 0))
+        axes.spines[['left', 'right', 'top']].set_visible(False)
+        axes.spines[['bottom']].set_visible(True)
+        axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+        axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
 
     if plot_lines:
 
@@ -218,12 +240,15 @@ def plot_macd(
         line_axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
         line_axes.set_xticks(xticks)
         line_axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-        axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
+        line_axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
         line_axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
         line_axes.set_xbound(lower=-.5, upper=len(df) - .5)
-        line_axes.set_frame_on(False)
+        line_axes.set_facecolor((0, 0, 0, 0))
+        line_axes.spines[['left', 'right', 'top', 'bottom']].set_visible(False)
 
         if plot_hist and plot_lines:
             line_axes.set_yticks([])
-
-
+        else:
+            line_axes.spines[['bottom']].set_visible(True)
+            line_axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
+            line_axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
