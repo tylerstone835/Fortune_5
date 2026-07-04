@@ -1,3 +1,5 @@
+from datetime import date
+
 import pandas as pd
 
 def is_green_day(
@@ -53,7 +55,7 @@ def get_bom(
 
 def get_date_range(
     df: pd.DataFrame,
-) -> tuple[str, str]:
+) -> tuple[date, date]:
     """
     Return start and end date included in DataFrame.
     :param df: Dataframe containing date column.
