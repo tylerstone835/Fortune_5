@@ -40,7 +40,7 @@ def plot_ohlc(
     axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-    axes.tick_params(axis='x', direction='in', length=0)
+    axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0,0,0,0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
@@ -112,7 +112,7 @@ def plot_line(
     axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-    axes.tick_params(axis='x', direction='in', length=0)
+    axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
@@ -148,7 +148,7 @@ def plot_volume(
     axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-    axes.tick_params(axis='x', direction='in', length=0)
+    axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
@@ -190,7 +190,7 @@ def plot_macd(
         axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
         axes.set_xticks(xticks)
         axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-        axes.tick_params(axis='x', direction='in', length=0)
+        axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
         axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
         axes.set_xbound(lower=-.5, upper=len(df) - .5)
         axes.set_frame_on(False)
@@ -212,13 +212,13 @@ def plot_macd(
             df['signal_line'],
             linestyle='-',
             color=_Y_LABEL_GREY,
-            linewidth=.8
+            linewidth=1
         )
 
         line_axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
         line_axes.set_xticks(xticks)
         line_axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-        line_axes.tick_params(axis='x', direction='in', length=0)
+        axes.tick_params(axis='x', direction='in', length=0, labelcolor=_Y_LABEL_GREY, labelsize='xx-small')
         line_axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
         line_axes.set_xbound(lower=-.5, upper=len(df) - .5)
         line_axes.set_frame_on(False)
