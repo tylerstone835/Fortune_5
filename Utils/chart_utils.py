@@ -155,42 +155,72 @@ def plot_volume(
     axes.yaxis.get_offset_text().set_fontsize('xx-small')
 
 
-def plot_macd_histogram(
+def plot_macd(
     axes: plt.axes,
     df: pd.DataFrame,
+    plot_hist: bool,
+    plot_lines: bool,
     xticks: pd.Series = pd.Series(),
 ) -> None:
     """
-    Plot bar chart on child axes. Requires date and macd_histogram data
+    Plot bar chart on child axes. Requires date and macd data
 
     :param axes: Child axes on matplotlib.pyplot.figure
-    :param df: Source pd.DataFrame. Requires date and macd_histogram.
+    :param df: Source pd.DataFrame. Requires date and macd data.
+    :param plot_hist: Flag for drawing MACD histogram.
+    :param plot_lines: Flag for drawing MACD lines.
     :param xticks: Add a custom series of date xticks, else blank.
     """
 
-    required_columns_set = {'date', 'macd_histogram'}
-
-    if not required_columns_set <= set(df.columns):
-        raise ValueError('Missing necessary data to construct chart')
-
     # Plot Data
-    color = (
-        (df['macd_histogram'] >= 0)
-        .map({True: (*_GREEN[0:3], .8), False: (*_RED[0:3], .8)})
-    )
+    if plot_hist:
+        color = (
+            (df['macd_histogram'] >= 0)
+            .map({True: (*_GREEN[0:3], .8), False: (*_RED[0:3], .8)})
+        )
 
-    axes.bar(
-        x=df['date'],
-        height=df['macd_histogram'],
-        width=.5,
-        color=color,
-        zorder=3
-    )
+        axes.bar(
+            x=df['date'],
+            height=df['macd_histogram'],
+            width=.5,
+            color=color,
+            zorder=3
+        )
 
-    axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
-    axes.set_xticks(xticks)
-    axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
-    axes.tick_params(axis='x', direction='in', length=0)
-    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
-    axes.set_xbound(lower=-.5, upper=len(df) - .5)
-    axes.set_frame_on(False)
+        axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
+        axes.set_xticks(xticks)
+        axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
+        axes.tick_params(axis='x', direction='in', length=0)
+        axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
+        axes.set_xbound(lower=-.5, upper=len(df) - .5)
+        axes.set_frame_on(False)
+
+    if plot_lines:
+
+        line_axes = axes if not plot_hist else axes.twinx()
+
+        line_axes.plot(
+            df['date'],
+            df['fast_line'],
+            linestyle='-',
+            color=_Y_LABEL_GREY,
+            linewidth=.4
+        )
+
+        line_axes.plot(
+            df['date'],
+            df['signal_line'],
+            linestyle='-',
+            color=_Y_LABEL_GREY,
+            linewidth=.8
+        )
+
+        line_axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
+        line_axes.set_xticks(xticks)
+        line_axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
+        line_axes.tick_params(axis='x', direction='in', length=0)
+        line_axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
+        line_axes.set_xbound(lower=-.5, upper=len(df) - .5)
+        line_axes.set_frame_on(False)
+
+
