@@ -75,9 +75,8 @@ with st.bottom:
     )
 
 # Data Config
-df = pd.read_csv(
-    f'https://raw.githubusercontent.com/tylerstone835/Fortune_5/refs/heads/master/Assets/Data/Daily/{company_dict[symbol]}.csv'
-)
+df = get_stock_data(timeframe=timeframe, symbol=company_dict[symbol])
+bom = get_bom(df)
 
 if not volume:
     df.drop(columns=['volume'], inplace=True)
@@ -100,25 +99,29 @@ plt.tight_layout()
 if style == 'OHLC':
     plot_ohlc(
         axes=ax[0],
-        df=df
+        df=df,
+        xticks=bom
     )
 
 elif style == 'Candle':
     plot_candle(
         axes=ax[0],
-        df=df
+        df=df,
+        xticks=bom
     )
 
 else:
     plot_line(
         axes=ax[0],
-        df=df
+        df=df,
+        xticks=bom
     )
 
 if volume:
     plot_volume(
         axes=ax[1],
-        df=df
+        df=df,
+        xticks=bom
     )
 
 if macd_hist or macd_lines:
@@ -126,7 +129,8 @@ if macd_hist or macd_lines:
         axes=ax[chart_number - 1],
         df=df,
         plot_hist=macd_hist,
-        plot_lines=macd_lines
+        plot_lines=macd_lines,
+        xticks=bom
     )
 
 # Body layout
