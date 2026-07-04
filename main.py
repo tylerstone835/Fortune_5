@@ -134,7 +134,8 @@ st.title('Fortune 5 - Price Action for the Five Largest Companies', text_alignme
 with st.container(border=True, horizontal_alignment='center'):
     with st.container(horizontal_alignment='right'):
         viz_output = st.segmented_control(
-            label=None,
+            label='**Visualization Type**',
+            label_visibility='collapsed',
             options=['Chart', 'DataFrame'],
             selection_mode='single',
             default='Chart',
