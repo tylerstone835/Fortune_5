@@ -116,3 +116,39 @@ def plot_line(
     axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
     axes.set_xbound(lower=-.5, upper=len(df) - .5)
     axes.set_frame_on(False)
+
+
+def plot_volume(
+    axes: plt.axes,
+    df: pd.DataFrame,
+    xticks: pd.Series = pd.Series(),
+) -> None:
+    """
+    Plot bar chart on child axes. Requires date and volume data
+
+    :param axes: Child axes on matplotlib.pyplot.figure
+    :param df: Source pd.DataFrame. Requires date and volume.
+    :param xticks: Add a custom series of date xticks, else blank.
+    """
+
+    required_columns_set = {'date', 'volume'}
+
+    if not required_columns_set <= set(df.columns):
+        raise ValueError('Missing necessary data to construct chart')
+
+    axes.bar(
+        x=df['date'],
+        height=df['volume'],
+        color=_RED,
+        width=.5
+    )
+
+    axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
+    axes.set_xticks(xticks)
+    axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
+    axes.tick_params(axis='x', direction='in', length=0)
+    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
+    axes.set_xbound(lower=-.5, upper=len(df) - .5)
+    axes.set_frame_on(False)
+    axes.yaxis.get_offset_text().set_fontsize('xx-small')
+
