@@ -136,13 +136,15 @@ def plot_volume(
     if not required_columns_set <= set(df.columns):
         raise ValueError('Missing necessary data to construct chart')
 
+    # Plot Data
     axes.bar(
         x=df['date'],
         height=df['volume'],
-        color=(*_RED[0:3], .7),
+        color=(*_RED[0:3], .8),
         width=.5
     )
 
+    # Style Settings
     axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
     axes.set_xticks(xticks)
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
@@ -152,3 +154,43 @@ def plot_volume(
     axes.set_frame_on(False)
     axes.yaxis.get_offset_text().set_fontsize('xx-small')
 
+
+def plot_macd_histogram(
+    axes: plt.axes,
+    df: pd.DataFrame,
+    xticks: pd.Series = pd.Series(),
+) -> None:
+    """
+    Plot bar chart on child axes. Requires date and macd_histogram data
+
+    :param axes: Child axes on matplotlib.pyplot.figure
+    :param df: Source pd.DataFrame. Requires date and macd_histogram.
+    :param xticks: Add a custom series of date xticks, else blank.
+    """
+
+    required_columns_set = {'date', 'macd_histogram'}
+
+    if not required_columns_set <= set(df.columns):
+        raise ValueError('Missing necessary data to construct chart')
+
+    # Plot Data
+    color = (
+        (df['macd_histogram'] >= 0)
+        .map({True: (*_GREEN[0:3], .8), False: (*_RED[0:3], .8)})
+    )
+
+    axes.bar(
+        x=df['date'],
+        height=df['macd_histogram'],
+        width=.5,
+        color=color,
+        zorder=3
+    )
+
+    axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
+    axes.set_xticks(xticks)
+    axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
+    axes.tick_params(axis='x', direction='in', length=0)
+    axes.tick_params(axis='y', direction='out', length=1.5, labelcolor=_Y_LABEL_GREY, labelsize='xx-small', color=(0, 0, 0, 0))
+    axes.set_xbound(lower=-.5, upper=len(df) - .5)
+    axes.set_frame_on(False)
