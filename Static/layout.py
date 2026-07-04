@@ -14,6 +14,6 @@ layout_kwargs: dict = {
         'nrows': 3,
         'ncols': 1,
         'sharex': True,
-        'height_ratios': [.73, .07, .20]
+        'height_ratios': [.70, .10, .20]
     }
 }
