@@ -6,6 +6,7 @@ from Utils.df_utils import is_green_day
 _GRID_ALPHA = .1
 _GREEN = (.03, .53, .04, 1)
 _RED = (.72, .23, .24, 1)
+_Y_LABEL_GREY = (.5, .5, .5, 1)
 
 
 def plot_ohlc(
