@@ -139,7 +139,7 @@ def plot_volume(
     axes.bar(
         x=df['date'],
         height=df['volume'],
-        color=_RED,
+        color=(*_RED[0:3], .7),
         width=.5
     )
 
