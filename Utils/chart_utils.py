@@ -223,4 +223,7 @@ def plot_macd(
         line_axes.set_xbound(lower=-.5, upper=len(df) - .5)
         line_axes.set_frame_on(False)
 
+        if plot_hist and plot_lines:
+            line_axes.set_yticks([])
+
 
