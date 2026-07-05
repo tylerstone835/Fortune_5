@@ -100,3 +100,22 @@ def calculate_macd(
     df[['fast_line', 'signal_line']] = df[['fast_line', 'signal_line']].round(7)
 
     df.drop(columns=[f'ema_{short_window}', f'ema_{long_window}'], inplace=True)
+
+
+def calculate_ema(
+    df: pd.DataFrame,
+    window: int,
+) -> None:
+    """
+    Calculate ema column for designated pd.DataFrame.
+
+    :param df: Target pd.DataFrame
+    :param window: Number of closing periods used in EMA calculation.
+    """
+
+    df[f'ema_{window}'] = (
+        df['close']
+        .ewm(span=window, adjust=False, min_periods=window)
+        .mean()
+        .round(2)
+    )
