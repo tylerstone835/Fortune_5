@@ -94,6 +94,15 @@ if not macd_hist:
 if not macd_lines:
     df.drop(columns=['fast_line', 'signal_line'], inplace=True)
 
+df = (
+    df
+    .loc[
+        (df['date'] >= date_selection[0].strftime('%Y-%m-%d')) &
+        (df['date'] <= date_selection[1].strftime('%Y-%m-%d'))
+    ]
+    .reset_index(drop=True)
+)
+
 
 fig, ax = plt.subplots(**layout_kwargs[chart_number])
 if chart_number == 1:
