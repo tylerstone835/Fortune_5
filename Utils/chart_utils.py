@@ -70,12 +70,14 @@ def plot_candle(
     if not required_columns_set <= set(df.columns):
         raise ValueError('Missing necessary data to construct chart')
 
+    candle_width = (len(df) * -2/125) + 5
+
     # Plot Data
     for row in df.itertuples(index=False):
 
         color = _GREEN if row.close >= row.open else _RED
 
-        axes.plot([row.date, row.date], [row.open, row.close], linestyle='-', color=color, linewidth=3)
+        axes.plot([row.date, row.date], [row.open, row.close], linestyle='-', color=color, linewidth=candle_width)
         axes.plot([row.date, row.date], [row.low, row.high], linestyle='-', color=color, linewidth=.5)
 
 
