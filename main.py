@@ -92,6 +92,10 @@ if not macd_hist:
 if not macd_lines:
     df.drop(columns=['fast_line', 'signal_line'], inplace=True)
 
+if ema:
+    calculate_ema(df, ema)
+
+# Filter date selection
 df = (
     df
     .loc[
@@ -130,6 +134,14 @@ else:
         xticks=bom
     )
 
+if ema:
+    plot_ema(
+        axes=ax[0],
+        df=df,
+        window=ema,
+        xticks=bom
+    )
+
 if volume:
     plot_volume(
         axes=ax[1],
@@ -162,4 +174,4 @@ with st.container(border=True, horizontal_alignment='center'):
     if viz_output == 'Chart':
         st.pyplot(fig=fig, width='content')
     elif viz_output == 'DataFrame':
-        st.dataframe(df, height='content', hide_index=True)
+        st.dataframe(df.sort_values(by='date', ascending=False), height='content', hide_index=True)
