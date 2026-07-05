@@ -55,7 +55,7 @@ def get_bom(
 
 def get_date_range(
     df: pd.DataFrame,
-) -> tuple[date, date]:
+) -> tuple[date, date, date]:
     """
     Return start and end date included in DataFrame.
     :param df: Dataframe containing date column.
@@ -63,9 +63,10 @@ def get_date_range(
     """
 
     min_date = df['date'].astype('datetime64[ns]').min().date()
+    med_date = df['date'].astype('datetime64[ns]').mean().date()
     max_date = df['date'].astype('datetime64[ns]').max().date()
 
-    return min_date, max_date
+    return min_date, med_date, max_date
 
 
 def calculate_macd(
