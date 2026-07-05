@@ -119,7 +119,7 @@ def plot_line(
     color = _GREEN if is_green_day(df) else _RED
     axes.plot(df['date'], df['close'], color=color, linewidth=1)
     y_bounds = axes.get_ybound()
-    axes.fill_between(df['date'], df['close'], color=(*color[0:3], .1), edgecolor=None)
+    axes.fill_between(df['date'], df['close'], color=(*color[0:3], .05), edgecolor=None)
     axes.set_ybound(y_bounds)
 
     # Style Settings
@@ -256,3 +256,34 @@ def plot_macd(
             line_axes.spines[['bottom']].set_visible(True)
             line_axes.spines[['bottom']].set_color(_Y_LABEL_GREY)
             line_axes.spines[['bottom']].set_linewidth(_SPINE_WIDTH)
+
+
+def plot_ema(
+    axes: plt.axes,
+    df: pd.DataFrame,
+    window: int,
+    xticks: pd.Series = pd.Series(),
+) -> None:
+    """
+    Plot EMA on child axes. Requires date and EMA data
+
+    :param axes: Child axes on matplotlib.pyplot.figure
+    :param df: Source pd.DataFrame. Requires date and EMA.
+    :param window: EMA window that's being plotted.
+    :param xticks: Add a custom series of date xticks, else blank.
+    """
+
+    required_columns_set = {'date', f'ema_{window}'}
+
+    if not required_columns_set <= set(df.columns):
+        raise ValueError('Missing necessary data to construct EMA')
+
+    x_bounds = axes.get_xbound()
+    y_bounds = axes.get_ybound()
+
+    axes.plot(df['date'], df[f'ema_{window}'], color=_Y_LABEL_GREY, linewidth=1)
+
+    axes.set_xticks(xticks)
+    axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
+    axes.set_xbound(x_bounds)
+    axes.set_ybound(y_bounds)
