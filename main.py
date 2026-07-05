@@ -53,6 +53,20 @@ with st.sidebar:
         required=True
     )
 
+    # Data Config
+    df = get_stock_data(timeframe=timeframe, symbol=company_dict[symbol])
+    bom = get_bom(df)
+    date_range = get_date_range(df)
+
+    st.space('xxsmall')
+
+    date_selection = st.slider(
+        label='**Date Range**',
+        value=date_range[1:],
+        min_value=date_range[0],
+        max_value=date_range[2]
+    )
+
     st.divider()
     st.write('# Indicators')
     volume = st.toggle(label='**Volume**', value=False)
@@ -70,9 +84,6 @@ with st.bottom:
         text_alignment='right'
     )
 
-# Data Config
-df = get_stock_data(timeframe=timeframe, symbol=company_dict[symbol])
-bom = get_bom(df)
 
 if not volume:
     df.drop(columns=['volume'], inplace=True)
@@ -83,7 +94,6 @@ if not macd_hist:
 if not macd_lines:
     df.drop(columns=['fast_line', 'signal_line'], inplace=True)
 
-df = df.tail(125).reset_index(drop=True)
 
 fig, ax = plt.subplots(**layout_kwargs[chart_number])
 if chart_number == 1:
