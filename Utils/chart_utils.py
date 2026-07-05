@@ -28,14 +28,16 @@ def plot_ohlc(
     if not required_columns_set <= set(df.columns):
         raise ValueError('Missing necessary data to construct chart')
 
+    marker_size = (len(df) * -1/125) + 3
+
     # Plot Data
     for row in df.itertuples(index=False):
 
         color = _GREEN if row.close >= row.open else _RED
 
         axes.plot([row.date, row.date], [row.low, row.high], marker=',', linestyle='-', color=color, linewidth=.75)
-        axes.plot(row.date, row.open, marker=0, color=color, markersize=2.5)
-        axes.plot(row.date, row.close, marker=1, color=color, markersize=2.5)
+        axes.plot(row.date, row.open, marker=0, color=color, markersize=marker_size)
+        axes.plot(row.date, row.close, marker=1, color=color, markersize=marker_size)
 
     # Style Settings
     axes.grid(visible=True, linestyle=':', alpha=_GRID_ALPHA, zorder=0)
