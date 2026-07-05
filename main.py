@@ -56,15 +56,13 @@ with st.sidebar:
     # Data Config
     df = get_stock_data(timeframe=timeframe, symbol=company_dict[symbol])
     bom = get_bom(df)
-    date_range = get_date_range(df)
 
     st.space('xxsmall')
 
-    date_selection = st.slider(
+    date_selection = st.select_slider(
         label='**Date Range**',
-        value=date_range[1:],
-        min_value=date_range[0],
-        max_value=date_range[2]
+        options=df['date'],
+        value=(df['date'][int(df.index.max() / 2)], df['date'].max())
     )
 
     st.divider()
@@ -97,8 +95,8 @@ if not macd_lines:
 df = (
     df
     .loc[
-        (df['date'] >= date_selection[0].strftime('%Y-%m-%d')) &
-        (df['date'] <= date_selection[1].strftime('%Y-%m-%d'))
+        (df['date'] >= date_selection[0]) &
+        (df['date'] <= date_selection[1])
     ]
     .reset_index(drop=True)
 )
