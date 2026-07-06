@@ -118,3 +118,15 @@ def configure_sidebar() -> dict:
         sidebar_dict['ema'] = st.slider(label='**EMA**', min_value=0, max_value=100, value=20)
 
         return sidebar_dict
+
+
+def draw_footer() -> None:
+    """
+    Draw footer elements.
+    """
+
+    with st.bottom:
+        st.markdown(
+            body='[Visit GitHub Repository](https://github.com/tylerstone835/Fortune_5)',
+            text_alignment='right'
+        )
