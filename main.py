@@ -34,59 +34,6 @@ sb_config['data'] = (
 )
 
 
-fig, ax = plt.subplots(**layout_kwargs[chart_number])
-if chart_number == 1:
-    ax = [ax]
-
-fig.set_facecolor((0, 0, 0, 0))
-plt.tight_layout()
-bom = get_bom(sb_config['data'])
-
-if sb_config['style'] == 'OHLC':
-    plot_ohlc(
-        axes=ax[0],
-        df=sb_config['data'],
-        xticks=bom
-    )
-
-elif sb_config['style'] == 'Candle':
-    plot_candle(
-        axes=ax[0],
-        df=sb_config['data'],
-        xticks=bom
-    )
-
-else:
-    plot_line(
-        axes=ax[0],
-        df=sb_config['data'],
-        xticks=bom
-    )
-
-if sb_config['ema']:
-    plot_ema(
-        axes=ax[0],
-        df=sb_config['data'],
-        window=sb_config['ema'],
-        xticks=bom
-    )
-
-if sb_config['volume']:
-    plot_volume(
-        axes=ax[1],
-        df=sb_config['data'],
-        xticks=bom
-    )
-
-if sb_config['macd_hist'] or sb_config['macd_lines']:
-    plot_macd(
-        axes=ax[chart_number - 1],
-        df=sb_config['data'],
-        plot_hist=sb_config['macd_hist'],
-        plot_lines=sb_config['macd_lines'],
-        xticks=bom
-    )
-
 # Body layout
 st.title('Fortune 5 - Price Action Analysis', text_alignment='center')
 with st.container(border=True, horizontal_alignment='center'):
@@ -112,7 +59,10 @@ with st.container(border=True, horizontal_alignment='center'):
             )
 
     if viz_output == 'Chart':
-        st.pyplot(fig=fig, width='content')
+        st.pyplot(
+            fig=draw_dashboard_figure(sb_config),
+            width='content'
+        )
     elif viz_output == 'DataFrame':
         st.dataframe(
             sb_config['data'].sort_values(by='date', ascending=False),
