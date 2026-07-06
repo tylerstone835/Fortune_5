@@ -5,25 +5,7 @@ from Utils.df_utils import *
 from Utils.st_utils import *
 
 
-# Initial page configuration and default pad settings.
-st.set_page_config(layout='wide', page_title='Fortune 5')
-st.markdown(
-"""
-    <style>
-           .block-container {
-                padding-top: 1rem;
-                padding-bottom: 0rem;
-                padding-left: 4rem;
-                padding-right: 4rem;
-            }
-
-            [data-testid="stMetricValue"] {
-                font-size: 20px;
-            }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
+set_dashboard_style()
 
 # Sidebar layout
 with st.sidebar:
