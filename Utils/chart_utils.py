@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from Utils.df_utils import is_green_day
+from Static.layout import layout_kwargs
+from Utils.df_utils import is_green_day, get_bom
 
 _GRID_ALPHA = .1
 _GREEN = (.03, .53, .04, 1)
@@ -287,3 +288,74 @@ def plot_ema(
     axes.set_xticklabels([fdate.date().strftime('%b-%y') for fdate in xticks.astype('datetime64[ns]')])
     axes.set_xbound(x_bounds)
     axes.set_ybound(y_bounds)
+
+
+def draw_dashboard_figure(
+        sb_config: dict,
+) -> plt.figure:
+    """
+    Determine what charts should be drawn in accordance with the sidebar
+    configuration and pick out the proper layout ratio for the number
+    of charts included.
+
+    :param sb_config:
+    :return: pyplot.figure with fully drawn child axes.
+    """
+
+    number_of_charts = 1 + sb_config['volume'] + (sb_config['macd_hist'] or sb_config['macd_lines'])
+
+    fig, ax = plt.subplots(**layout_kwargs[number_of_charts])
+    fig.set_facecolor((0, 0, 0, 0))
+    plt.tight_layout()
+
+    if number_of_charts == 1:
+        ax = [ax]
+    
+    bom = get_bom(sb_config['data'])
+
+    if sb_config['style'] == 'OHLC':
+        plot_ohlc(
+            axes=ax[0],
+            df=sb_config['data'],
+            xticks=bom
+        )
+
+    elif sb_config['style'] == 'Candle':
+        plot_candle(
+            axes=ax[0],
+            df=sb_config['data'],
+            xticks=bom
+        )
+
+    else:
+        plot_line(
+            axes=ax[0],
+            df=sb_config['data'],
+            xticks=bom
+        )
+
+    if sb_config['ema']:
+        plot_ema(
+            axes=ax[0],
+            df=sb_config['data'],
+            window=sb_config['ema'],
+            xticks=bom
+        )
+
+    if sb_config['volume']:
+        plot_volume(
+            axes=ax[1],
+            df=sb_config['data'],
+            xticks=bom
+        )
+
+    if sb_config['macd_hist'] or sb_config['macd_lines']:
+        plot_macd(
+            axes=ax[number_of_charts - 1],
+            df=sb_config['data'],
+            plot_hist=sb_config['macd_hist'],
+            plot_lines=sb_config['macd_lines'],
+            xticks=bom
+        )
+
+    return fig
