@@ -131,3 +131,35 @@ def calculate_close_delta(df):
     max_index = df.index.max()
     difference = (df.at[max_index, 'close'] - df.at[max_index - 1, 'close']) / df.at[max_index - 1, 'close']
     return f'{round(difference * 100, 2)}%'
+
+
+def customize_dataframe(
+        sb_config: dict
+) -> None:
+    """
+    Filter DataFrame in accordance with sidebar widget inputs.
+
+    :param sb_config: dictionary containing sidebar inputs.
+    """
+
+    if not sb_config['volume']:
+        sb_config['data'].drop(columns=['volume'], inplace=True)
+
+    if not sb_config['macd_hist']:
+        sb_config['data'].drop(columns=['macd_histogram'], inplace=True)
+
+    if not sb_config['macd_lines']:
+        sb_config['data'].drop(columns=['fast_line', 'signal_line'], inplace=True)
+
+    if sb_config['ema']:
+        calculate_ema(sb_config['data'], sb_config['ema'])
+
+    # Filter date selection
+    sb_config['data'] = (
+        sb_config['data']
+        .loc[
+            (sb_config['data']['date'] >= sb_config['date_selection'][0]) &
+            (sb_config['data']['date'] <= sb_config['date_selection'][1])
+            ]
+        .reset_index(drop=True)
+    )
