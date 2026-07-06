@@ -4,6 +4,7 @@ from pandas import DataFrame
 from pandas.io.parsers import TextFileReader
 
 from Static.company import company_dict
+from Utils.df_utils import customize_dataframe
 
 
 @st.cache_data(scope='session')
@@ -116,6 +117,9 @@ def configure_sidebar() -> dict:
         sidebar_dict['macd_lines'] = st.toggle(label='**MACD Lines**', value=False)
         st.space('xxsmall')
         sidebar_dict['ema'] = st.slider(label='**EMA**', min_value=0, max_value=100, value=20)
+
+        # Customize dataframe with sidebar inputs
+        customize_dataframe(sidebar_dict)
 
         return sidebar_dict
 
