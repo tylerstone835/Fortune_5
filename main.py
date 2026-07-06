@@ -161,15 +161,26 @@ if macd_hist or macd_lines:
 # Body layout
 st.title('Fortune 5 - Price Action for the Five Largest Companies', text_alignment='center')
 with st.container(border=True, horizontal_alignment='center'):
-    with st.container(horizontal_alignment='right'):
-        viz_output = st.segmented_control(
-            label='**Visualization Type**',
-            label_visibility='collapsed',
-            options=['Chart', 'DataFrame'],
-            selection_mode='single',
-            default='Chart',
-            required=True
-        )
+    # with st.container(horizontal_alignment='right'):
+    with st.container(horizontal=True):
+
+        with st.container(horizontal_alignment='left', vertical_alignment='top'):
+            st.metric(
+                label='Close Price',
+                value=df.loc[df.index.max(), 'close'],
+                delta=calculate_close_delta(df),
+                label_visibility='collapsed'
+            )
+
+        with st.container(horizontal_alignment='right'):
+            viz_output = st.segmented_control(
+                label='**Visualization Type**',
+                label_visibility='collapsed',
+                options=['Chart', 'DataFrame'],
+                selection_mode='single',
+                default='Chart',
+                required=True
+            )
 
     if viz_output == 'Chart':
         st.pyplot(fig=fig, width='content')
