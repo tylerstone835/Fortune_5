@@ -7,15 +7,8 @@ from Utils.st_utils import *
 
 set_dashboard_style()
 sb_config = configure_sidebar()
+draw_footer()
 
-chart_number = 1 + sb_config['volume'] + (sb_config['macd_hist'] or sb_config['macd_lines'])
-
-# Footer layout
-with st.bottom:
-    st.markdown(
-        body='[Visit GitHub Repository](https://github.com/tylerstone835/Fortune_5)',
-        text_alignment='right'
-    )
 
 
 if not sb_config['volume']:
