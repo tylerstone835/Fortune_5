@@ -16,6 +16,10 @@ st.markdown(
                 padding-left: 4rem;
                 padding-right: 4rem;
             }
+
+            [data-testid="stMetricValue"] {
+                font-size: 20px;
+            }
     </style>
     """,
     unsafe_allow_html=True
@@ -68,10 +72,10 @@ with st.sidebar:
     st.divider()
     st.write('# Indicators')
     volume = st.toggle(label='**Volume**', value=False)
-    macd_hist = st.toggle(label='**MACD Histogram**', value=False)
+    macd_hist = st.toggle(label='**MACD Histogram**', value=True)
     macd_lines = st.toggle(label='**MACD Lines**', value=False)
     st.space('xxsmall')
-    ema = st.slider(label='**EMA**', min_value=0, max_value=100, value=0)
+    ema = st.slider(label='**EMA**', min_value=0, max_value=100, value=20)
 
 chart_number = 1 + volume + (macd_hist or macd_lines)
 
@@ -159,7 +163,7 @@ if macd_hist or macd_lines:
     )
 
 # Body layout
-st.title('Fortune 5 - Price Action for the Five Largest Companies', text_alignment='center')
+st.title('Fortune 5 - Price Action Analysis', text_alignment='center')
 with st.container(border=True, horizontal_alignment='center'):
     # with st.container(horizontal_alignment='right'):
     with st.container(horizontal=True):
