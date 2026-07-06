@@ -119,3 +119,15 @@ def calculate_ema(
         .mean()
         .round(2)
     )
+
+
+def calculate_close_delta(df):
+    """
+    Get latest closing delta for date range for header KPI metric.
+
+    :param df: Target df to obtain KPI from.
+    """
+
+    max_index = df.index.max()
+    difference = (df.at[max_index, 'close'] - df.at[max_index - 1, 'close']) / df.at[max_index - 1, 'close']
+    return f'{round(difference * 100, 2)}%'
