@@ -29,3 +29,43 @@ To get the relevant stock data, I designed ETLs that leverage the [Massive's RES
 
 ![Project Diagram](Docs/Diagram.png)
 
+# Repository Structure
+```bash
+.
+├── Assets
+│   └── Data
+│       ├── Daily
+│       │   ├── AAPL.csv
+│       │   ├── AMZN.csv
+│       │   ├── GOOGL.csv
+│       │   ├── UNH.csv
+│       │   └── WMT.csv
+│       └── Weekly
+│           ├── AAPL.csv
+│           ├── AMZN.csv
+│           ├── GOOGL.csv
+│           ├── UNH.csv
+│           └── WMT.csv
+├── Docs
+│   ├── Dashboard.png
+│   └── Diagram.png
+├── ETLs
+│   ├── get_daily.py
+│   └── get_weekly.py
+├── .gitignore
+├── main.py
+├── README.md
+├── requirements.txt
+├── Static
+│   ├── company.py
+│   └── layout.py
+├── .streamlit
+│   └── config.toml
+└── Utils
+    ├── chart_utils.py
+    ├── df_utils.py
+    └── st_utils.py
+
+10 directories, 25 files
+```
+
