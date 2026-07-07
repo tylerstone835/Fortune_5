@@ -1,7 +1,7 @@
 company_dict = {
+    'Alphabet': 'GOOGL',
     'Amazon': 'AMZN',
     'Apple': 'AAPL',
-    'McKesson': 'MCK',
     'UnitedHealth': 'UNH',
     'Walmart': 'WMT'
 }

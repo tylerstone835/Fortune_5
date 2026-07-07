@@ -74,5 +74,5 @@ if __name__ == '__main__':
         'WMT',
         'UNH',
         'AAPL',
-        'MCK'
+        'GOOGL'
     )
