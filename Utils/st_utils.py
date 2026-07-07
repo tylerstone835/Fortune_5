@@ -152,12 +152,18 @@ def draw_body(
 
         with st.container(horizontal=True):
 
-            with st.container(horizontal_alignment='left', vertical_alignment='top'):
+            with st.container(horizontal_alignment='left'):
                 st.metric(
                     label='Close Price',
                     value=sb_config['data'].loc[sb_config['data'].index.max(), 'close'],
                     delta=calculate_close_delta(sb_config['data']),
                     label_visibility='collapsed'
+                )
+
+            with st.container(vertical_alignment='top'):
+                st.markdown(
+                    body=f'## :grey[{company_dict[sb_config['symbol']]}: {sb_config['symbol']}]',
+                    text_alignment='center'
                 )
 
             with st.container(horizontal_alignment='right'):
