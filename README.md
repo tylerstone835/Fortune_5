@@ -9,7 +9,7 @@ Every year, the Fortune 500 publishes the largest US corporations by total reven
 My Streamlit Dashboard visualizes the stock market price action data (open, high, low, close, volume) and provides a few of the most popular indicators (MACD, EMA) to help contextualize the movement.
 
 # Features
-Let's do a quick breakdown of the features/widgets on the dashboard:
+Let's do a quick breakdown of the features/widgets on the dashboard. [Open the dashboard](https://fortune5.streamlit.app/) and follow along!
 
 ![Streamlit Dashboard Overview](Docs/Dashboard.png)
 
