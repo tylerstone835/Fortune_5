@@ -1,10 +1,12 @@
 from datetime import date, timedelta
 import logging
 import os
-import pandas as pd
+import sys
 
+import pandas as pd
 import requests
 
+sys.path.insert(0, os.environ.get('F5_ROOT_DIRECTORY'))
 from Utils.df_utils import calculate_macd
 
 POLYGON_API_KEY = os.environ.get('POLYGON_API_KEY')
