@@ -64,7 +64,7 @@ def get_weekly_price_action(
         (
             weekly_df
             .loc[weekly_df['date'] >= CUTOFF_DATE.strftime('%Y-%m-%d')]
-            .to_csv(f'../Assets/Data/Weekly/{ticker}.csv', index=False)
+            .to_csv(f'{os.environ.get('F5_ROOT_DIRECTORY')}/Assets/Data/Weekly/{ticker}.csv', index=False)
         )
 
 

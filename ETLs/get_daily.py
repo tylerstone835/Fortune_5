@@ -64,7 +64,7 @@ def get_daily_price_action(
         (
             daily_df
             .loc[daily_df['date'] >= CUTOFF_DATE.strftime('%Y-%m-%d')]
-            .to_csv(f'../Assets/Data/Daily/{ticker}.csv', index=False)
+            .to_csv(f'{os.environ.get('F5_ROOT_DIRECTORY')}/Assets/Data/Daily/{ticker}.csv', index=False)
         )
 
 
