@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import pandas as pd
+import streamlit as st
 
 from Static.layout import layout_kwargs
 from Utils.df_utils import is_green_day, get_bom
@@ -291,18 +292,18 @@ def plot_ema(
 
 
 def draw_dashboard_figure(
-        sb_config: dict,
+        session_state: st.session_state,
 ) -> plt.figure:
     """
     Determine what charts should be drawn in accordance with the sidebar
     configuration and pick out the proper layout ratio for the number
     of charts included.
 
-    :param sb_config:
+    :param session_state:
     :return: pyplot.figure with fully drawn child axes.
     """
 
-    number_of_charts = 1 + sb_config['volume'] + (sb_config['macd_hist'] or sb_config['macd_lines'])
+    number_of_charts = 1 + session_state['volume'] + (session_state['macd_hist'] or session_state['macd_lines'])
 
     fig, ax = plt.subplots(**layout_kwargs[number_of_charts])
     fig.set_facecolor((0, 0, 0, 0))
@@ -311,50 +312,50 @@ def draw_dashboard_figure(
     if number_of_charts == 1:
         ax = [ax]
     
-    bom = get_bom(sb_config['data'])
+    bom = get_bom(session_state['data'])
 
-    if sb_config['style'] == 'OHLC':
+    if session_state['style'] == 'OHLC':
         plot_ohlc(
             axes=ax[0],
-            df=sb_config['data'],
+            df=session_state['data'],
             xticks=bom
         )
 
-    elif sb_config['style'] == 'Candle':
+    elif session_state['style'] == 'Candle':
         plot_candle(
             axes=ax[0],
-            df=sb_config['data'],
+            df=session_state['data'],
             xticks=bom
         )
 
     else:
         plot_line(
             axes=ax[0],
-            df=sb_config['data'],
+            df=session_state['data'],
             xticks=bom
         )
 
-    if sb_config['ema']:
+    if session_state['ema']:
         plot_ema(
             axes=ax[0],
-            df=sb_config['data'],
-            window=sb_config['ema'],
+            df=session_state['data'],
+            window=session_state['ema'],
             xticks=bom
         )
 
-    if sb_config['volume']:
+    if session_state['volume']:
         plot_volume(
             axes=ax[1],
-            df=sb_config['data'],
+            df=session_state['data'],
             xticks=bom
         )
 
-    if sb_config['macd_hist'] or sb_config['macd_lines']:
+    if session_state['macd_hist'] or session_state['macd_lines']:
         plot_macd(
             axes=ax[number_of_charts - 1],
-            df=sb_config['data'],
-            plot_hist=sb_config['macd_hist'],
-            plot_lines=sb_config['macd_lines'],
+            df=session_state['data'],
+            plot_hist=session_state['macd_hist'],
+            plot_lines=session_state['macd_lines'],
             xticks=bom
         )
 

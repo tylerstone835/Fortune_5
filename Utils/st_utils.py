@@ -54,75 +54,79 @@ def set_dashboard_style() -> None:
         unsafe_allow_html=True
     )
 
-def configure_sidebar() -> dict:
+def configure_sidebar() -> st.session_state:
     """
     Draw sidebar elements and collect widget inputs into a dict struct.
 
-    :return: Dictionary containing sidebar values/data.
+    :return: st.session_state
     """
 
-    sidebar_dict = {}
 
     with st.sidebar:
         st.space('xxsmall')
 
         st.write('# Chart Options')
 
-        sidebar_dict['symbol'] = st.selectbox(
+        st.selectbox(
             label='**Company**',
             options=[company for company in company_dict],
-            index=0
+            index=0,
+            key='symbol'
         )
 
         st.space('xxsmall')
 
-        sidebar_dict['timeframe'] = st.segmented_control(
+        st.segmented_control(
             label='**Timeframe**',
             options=['Daily', 'Weekly'],
             selection_mode='single',
             default='Daily',
-            required=True
+            required=True,
+            key='timeframe'
         )
 
         st.space('xxsmall')
 
-        sidebar_dict['style'] = st.segmented_control(
+        st.segmented_control(
             label='**Chart Style**',
             options=['Candle', 'Line', 'OHLC'],
             selection_mode='single',
             default='Candle',
-            required=True
+            required=True,
+            key='style'
         )
 
         # Retrieve pd.DataFrame based on sidebar input
-        sidebar_dict['data'] = get_stock_data(
-            timeframe=sidebar_dict['timeframe'],
-            symbol=company_dict[sidebar_dict['symbol']]
+        st.session_state['data'] = get_stock_data(
+            timeframe=st.session_state['timeframe'],
+            symbol=company_dict[st.session_state['symbol']]
         )
 
 
         st.space('xxsmall')
 
-        sidebar_dict['date_selection'] = st.select_slider(
+        st.select_slider(
             label='**Date Range**',
-            options=sidebar_dict['data']['date'],
+            options=st.session_state['data']['date'],
             value=(
-                sidebar_dict['data']['date'][int(sidebar_dict['data'].index.max() / 2)],
-                sidebar_dict['data']['date'].max())
+                st.session_state['data']['date'][int(st.session_state['data'].index.max() / 2)],
+                st.session_state['data']['date'].max()
+            ),
+            key='date_selection'
         )
 
         st.divider()
         st.write('# Indicators')
-        sidebar_dict['volume'] = st.toggle(label='**Volume**', value=False)
-        sidebar_dict['macd_hist'] = st.toggle(label='**MACD Histogram**', value=True)
-        sidebar_dict['macd_lines'] = st.toggle(label='**MACD Lines**', value=False)
+        st.toggle(label='**Volume**', value=False, key='volume')
+        st.toggle(label='**MACD Histogram**', value=True, key='macd_hist')
+        st.toggle(label='**MACD Lines**', value=False, key='macd_lines')
         st.space('xxsmall')
-        sidebar_dict['ema'] = st.slider(label='**EMA**', min_value=0, max_value=100, value=20)
+        st.slider(label='**EMA**', min_value=0, max_value=100, value=20, key='ema')
 
         # Customize dataframe with sidebar inputs
-        customize_dataframe(sidebar_dict)
+        customize_dataframe(st.session_state)
 
-        return sidebar_dict
+        return st.session_state
 
 
 def draw_footer() -> None:
@@ -138,12 +142,12 @@ def draw_footer() -> None:
 
 
 def draw_body(
-    sb_config: dict
+    session_state: st.session_state
 ) -> None:
     """
     Draw body of dashboard with data selection and input elements from sidebar.
 
-    :param sb_config:
+    :param session_state: st.session_state
     """
 
     # Body layout
@@ -155,14 +159,14 @@ def draw_body(
             with st.container(horizontal_alignment='left'):
                 st.metric(
                     label='Close Price',
-                    value=sb_config['data'].loc[sb_config['data'].index.max(), 'close'],
-                    delta=calculate_close_delta(sb_config['data']),
+                    value=session_state['data'].loc[session_state['data'].index.max(), 'close'],
+                    delta=calculate_close_delta(session_state['data']),
                     label_visibility='collapsed'
                 )
 
             with st.container(vertical_alignment='top'):
                 st.markdown(
-                    body=f'## :grey[{company_dict[sb_config['symbol']]}: {sb_config['symbol']}]',
+                    body=f'## :grey[{company_dict[session_state['symbol']]}: {session_state['symbol']}]',
                     text_alignment='center'
                 )
 
@@ -178,13 +182,13 @@ def draw_body(
 
         if viz_output == 'Chart':
             st.pyplot(
-                fig=draw_dashboard_figure(sb_config),
+                fig=draw_dashboard_figure(session_state),
                 width='content'
             )
 
         elif viz_output == 'DataFrame':
             st.dataframe(
-                sb_config['data'].sort_values(by='date', ascending=False),
+                session_state['data'].sort_values(by='date', ascending=False),
                 height='content',
                 hide_index=True
             )

@@ -1,6 +1,7 @@
 from datetime import date
 
 import pandas as pd
+import streamlit as st
 
 def is_green_day(
     df: pd.DataFrame,
@@ -121,11 +122,14 @@ def calculate_ema(
     )
 
 
-def calculate_close_delta(df):
+def calculate_close_delta(
+        df: pd.DataFrame,
+) -> str:
     """
     Get latest closing delta for date range for header KPI metric.
 
     :param df: Target df to obtain KPI from.
+    :return: Close price difference formatted as string.
     """
 
     max_index = df.index.max()
@@ -134,32 +138,32 @@ def calculate_close_delta(df):
 
 
 def customize_dataframe(
-        sb_config: dict
+        session_state: st.session_state,
 ) -> None:
     """
     Filter DataFrame in accordance with sidebar widget inputs.
 
-    :param sb_config: dictionary containing sidebar inputs.
+    :param session_state: dictionary containing sidebar inputs.
     """
 
-    if not sb_config['volume']:
-        sb_config['data'].drop(columns=['volume'], inplace=True)
+    if not session_state['volume']:
+        session_state['data'].drop(columns=['volume'], inplace=True)
 
-    if not sb_config['macd_hist']:
-        sb_config['data'].drop(columns=['macd_histogram'], inplace=True)
+    if not session_state['macd_hist']:
+        session_state['data'].drop(columns=['macd_histogram'], inplace=True)
 
-    if not sb_config['macd_lines']:
-        sb_config['data'].drop(columns=['fast_line', 'signal_line'], inplace=True)
+    if not session_state['macd_lines']:
+        session_state['data'].drop(columns=['fast_line', 'signal_line'], inplace=True)
 
-    if sb_config['ema']:
-        calculate_ema(sb_config['data'], sb_config['ema'])
+    if session_state['ema']:
+        calculate_ema(session_state['data'], session_state['ema'])
 
     # Filter date selection
-    sb_config['data'] = (
-        sb_config['data']
+    session_state['data'] = (
+        session_state['data']
         .loc[
-            (sb_config['data']['date'] >= sb_config['date_selection'][0]) &
-            (sb_config['data']['date'] <= sb_config['date_selection'][1])
+            (session_state['data']['date'] >= session_state['date_selection'][0]) &
+            (session_state['data']['date'] <= session_state['date_selection'][1])
             ]
         .reset_index(drop=True)
     )
